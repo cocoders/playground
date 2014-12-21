@@ -31,7 +31,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given I am receptionist in the clinic
+     * @Given że jestem recepcjonistą w przychodni
      */
     public function iAmReceptionistInTheClinic()
     {
@@ -44,7 +44,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given patient does not have medical insurance
+     * @Given pacjent któremu rezerwuje wizytę nie ma ubezpieczenia
      */
     public function patientDoesNotHaveMedicalInsurance()
     {
@@ -54,7 +54,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @When I am find and open that patient case
+     * @When znajdę teczkę tego pacjenta w systemie
      */
     public function iAmFindAndOpenThatPatientCase()
     {
@@ -67,7 +67,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I should see that the patient can not be scheduled for a medical visit because he is not insured
+     * @Then powinienem zobaczyć że dany pacjent nie może być umówiony na wizytę ponieważ nie jest ubezpieczony
      */
     public function iShouldSeeThatThePatientCanNotBeScheduledForAMedicalVisitBecauseHeIsNotInsured()
     {
@@ -77,7 +77,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Given patient has medical insurance
+     * @Given pacjent któremu rezerwuje wizytę jest ubezpieczony
      */
     public function patientHasMedicalInsurance()
     {
@@ -86,7 +86,7 @@ class MedicalClinicContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then I should see that the patient can be scheduled for a medical visit
+     * @Then powinienem zobaczyć że dany pacjent może być umówiony na wizytę
      */
     public function iShouldSeeThatThePatientCanBeScheduledForAMedicalVisit()
     {

@@ -1,7 +1,7 @@
 Run docker
 ===========
 
-**Notice:** Will remove and close all other docker container.
+**Notice:** Will remove and close all other docker containers.
 
 Running docker
 

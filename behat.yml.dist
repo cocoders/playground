@@ -1,0 +1,9 @@
+default:
+    suites:
+        receptionist:
+            contexts:
+                - MedicalClinicContext
+            paths:
+                features: %paths.base%/features/Receptionist
+            filters:
+                tags: ~@wip

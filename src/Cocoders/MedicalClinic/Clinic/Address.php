@@ -2,7 +2,7 @@
 
 namespace Cocoders\MedicalClinic\Clinic;
 
-class Address
+final class Address
 {
     private $postalCode;
     private $city;
@@ -17,5 +17,20 @@ class Address
         $this->postalCode = $postalCode;
         $this->city = $city;
         $this->street = $street;
+    }
+
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function getStreet()
+    {
+        return $this->street;
     }
 }

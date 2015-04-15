@@ -1,6 +1,5 @@
 <?php
 
-use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cocoders\MedicalClinic\Clinic;
 use Cocoders\MedicalClinic\Clinic\Address;
@@ -10,7 +9,7 @@ use Cocoders\MedicalClinic\Clinic\NationalEconomyRegisterNumber;
 use Cocoders\MedicalClinic\Employee\Receptionist;
 use Cocoders\MedicalClinic\Patient;
 
-class MedicalClinicContext implements Context, SnippetAcceptingContext
+class MedicalClinicContext implements SnippetAcceptingContext
 {
     private $clinic;
     private $receptionist;

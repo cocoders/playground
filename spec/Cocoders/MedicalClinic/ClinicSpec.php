@@ -14,36 +14,27 @@ use Prophecy\Argument;
 
 class ClinicSpec extends ObjectBehavior
 {
-    function let(
-        Address $address,
-        Service $service,
-        TaxIdentificationNumber $taxNumber,
-        NationalEconomyRegisterNumber $nationalEconomyRegisterNumber
-    )
+    function let()
     {
         $this->beConstructedWith(
-            'Clinic name',
-            $address,
+            'Cocoders clinic',
+            new Address('87-100', 'Toruń', 'Jęczmienna 19'),
             $servicesProvidedByClinic = [
-                $service
+                new Service('Dental')
             ],
-            $taxNumber,
-            $nationalEconomyRegisterNumber
+            new TaxIdentificationNumber('9562307984'),
+            new NationalEconomyRegisterNumber('341603071')
         );
     }
 
-    function it_cannot_be_initialized_at_least_one_service(
-        Address $address,
-        TaxIdentificationNumber $taxNumber,
-        NationalEconomyRegisterNumber $nationalEconomyRegisterNumber
-    )
+    function it_cannot_be_initialized_at_least_one_service()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('__construct', [
-            'Clinic name',
-            $address,
+            'Cocoders clinic',
+            new Address('87-100', 'Toruń', 'Jęczmienna 19'),
             $servicesProvidedByClinic = [],
-            $taxNumber,
-            $nationalEconomyRegisterNumber
+            new TaxIdentificationNumber('9562307984'),
+            new NationalEconomyRegisterNumber('341603071')
         ]);
     }
 

@@ -51,6 +51,11 @@ class Clinic
         $this->nationalEconomyRegisterNumber = $nationalEconomyRegisterNumber;
     }
 
+    public function getTaxIdNumber()
+    {
+        return $this->taxNumber;
+    }
+
     public function hasEmployee(Employee $employee)
     {
         return false !== array_search($employee, $this->employees);

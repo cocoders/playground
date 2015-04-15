@@ -1,13 +1,11 @@
 <?php
 
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Cocoders\Adapters\InMemory\MedicalClinic\ClinicRegistry;
 use Cocoders\MedicalClinic\Clinic;
-use Cocoders\MedicalClinic\Clinic\Address;
-use Cocoders\MedicalClinic\Clinic\Service;
-use Cocoders\MedicalClinic\Clinic\TaxIdentificationNumber;
-use Cocoders\MedicalClinic\Clinic\NationalEconomyRegisterNumber;
-use Cocoders\MedicalClinic\Employee\Receptionist;
 use Cocoders\MedicalClinic\Patient;
+use Cocoders\MedicalClinic\Employee\Receptionist;
+use Cocoders\MedicalClinic\UseCase\SettingUpClinic;
 
 class MedicalClinicContext implements SnippetAcceptingContext
 {
@@ -17,16 +15,23 @@ class MedicalClinicContext implements SnippetAcceptingContext
 
     public function __construct()
     {
-        $this->clinic = new Clinic(
-            'Clinic name',
-            new Address($postalCode = '80-283', $city = 'Gdańsk', $street = 'Królewskie Wzgórze 21/9'),
-            $servicesProvidedByClinic = [
-                new Service('MRI'),
-                new Service('CT')
+        $clinicRegistry = new ClinicRegistry();
+
+        $settingUpClinic  = new SettingUpClinic($clinicRegistry);
+        $settingUpClinic->execute(new SettingUpClinic\Command(
+            $name = 'Clinic name',
+            $postalCode = '80-283',
+            $city = 'Gdańsk',
+            $street = 'Królewskie Wzgórze',
+            $services = [
+                'MRI',
+                'CT'
             ],
-            new TaxIdentificationNumber('123-456-32-18'),
-            new NationalEconomyRegisterNumber('123456785')
-        );
+            $taxIdNumber = '123-456-32-18',
+            $nationalRegistryNumber= '123456785'
+        ));
+
+        $this->clinic = $clinicRegistry->find(new Clinic\TaxIdentificationNumber($taxIdNumber));
     }
 
     /**

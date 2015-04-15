@@ -47,9 +47,15 @@ class ClinicSpec extends ObjectBehavior
 
     function it_allows_register_patients(Patient $patient)
     {
+        $this->hireEmployee(new Employee\Receptionist(
+            'Jan',
+            'Kowalski',
+            '83010104123'
+        ));
+
         $patient->getIdNumber()->willReturn('80010104000');
         $patient->__toString()->willReturn('Kowalski Leszek (80010104000)');
-        $this->registerPatient($patient, false);
+        $this->registerPatient($patient, '83010104123', false);
 
         /**
          * @var PatientCase $patientCase
@@ -60,12 +66,20 @@ class ClinicSpec extends ObjectBehavior
         $patientCase->getVisitsQuantity()->shouldBe(1);
         $patientCase->canBeScheduledForVisit()->shouldBe(false);
 
-        $this->registerPatient($patient, true);
+        $this->registerPatient($patient, '83010104123', true);
 
         $patientCase = $this->findPatientCase('80010104000');
         $patientCase->getTitle()->shouldBe('Kowalski Leszek (80010104000)');
         $patientCase->getIdNumber()->shouldBe('80010104000');
         $patientCase->getVisitsQuantity()->shouldBe(2);
         $patientCase->canBeScheduledForVisit()->shouldBe(true);
+    }
+
+    function it_allows_register_patients_only_by_receptionist(Patient $patient)
+    {
+        $patient->getIdNumber()->willReturn('80010104000');
+        $patient->__toString()->willReturn('Kowalski Leszek (80010104000)');
+
+        $this->shouldThrow('\InvalidArgumentException')->duringRegisterPatient($patient, '83010104123',  false);
     }
 }

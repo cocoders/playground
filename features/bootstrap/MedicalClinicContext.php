@@ -4,14 +4,14 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Cocoders\Adapters\InMemory\MedicalClinic\ClinicRegistry;
 use Cocoders\MedicalClinic\Clinic;
 use Cocoders\MedicalClinic\Patient;
-use Cocoders\MedicalClinic\Employee\Receptionist;
+use Cocoders\MedicalClinic\UseCase\HireReceptionist;
 use Cocoders\MedicalClinic\UseCase\SettingUpClinic;
 
 class MedicalClinicContext implements SnippetAcceptingContext
 {
     private $clinic;
-    private $receptionist;
     private $patientCase;
+    private $hireReceptionist;
 
     public function __construct()
     {
@@ -30,6 +30,7 @@ class MedicalClinicContext implements SnippetAcceptingContext
             $taxIdNumber = '123-456-32-18',
             $nationalRegistryNumber= '123456785'
         ));
+        $this->hireReceptionist = new HireReceptionist($clinicRegistry);
 
         $this->clinic = $clinicRegistry->find(new Clinic\TaxIdentificationNumber($taxIdNumber));
     }
@@ -39,12 +40,12 @@ class MedicalClinicContext implements SnippetAcceptingContext
      */
     public function iAmReceptionistInTheClinic()
     {
-        $this->receptionist = new Receptionist(
+        $this->hireReceptionist->execute(new HireReceptionist\Command(
+            $taxIdNumber = '123-456-32-18',
             $firstName = 'Jan',
             $lastName = 'Kowalski',
             $idNumber = '80081012345'
-        );
-        $this->clinic->hireEmployee($this->receptionist);
+        ));
     }
 
     /**
@@ -54,7 +55,7 @@ class MedicalClinicContext implements SnippetAcceptingContext
     {
         $patient = new Patient($idNumber = '70081012345', $firstName = 'Leszek', $lastName = 'Kowalski');
 
-        $this->clinic->registerPatient($patient, $hasInsurance = false);
+        $this->clinic->registerPatient($patient, $receptionistId = '80081012345', $hasInsurance = false);
     }
 
     /**
@@ -62,9 +63,9 @@ class MedicalClinicContext implements SnippetAcceptingContext
      */
     public function iAmFindAndOpenThatPatientCase()
     {
-        $patientCase = $this->clinic->findPatientCase($idNumber = '70081012345');
+        $patientCase = $this->clinic->findPatientCase($patientIdNumber = '70081012345');
         if (!$patientCase) {
-            throw new \LogicException(sprintf('Cannot find patient with %s id number', $idNumber));
+            throw new \LogicException(sprintf('Cannot find patient with %s id number', $patientIdNumber));
         }
 
         $this->patientCase = $patientCase;
@@ -86,7 +87,7 @@ class MedicalClinicContext implements SnippetAcceptingContext
     public function patientHasMedicalInsurance()
     {
         $patient = new Patient($idNumber = '70081012345', $firstName = 'Leszek', $lastName = 'Kowalski');
-        $this->clinic->registerPatient($patient, $hasInsurance = true);
+        $this->clinic->registerPatient($patient, $receptionistId = '80081012345', $hasInsurance = true);
     }
 
     /**

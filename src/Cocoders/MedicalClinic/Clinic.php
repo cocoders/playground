@@ -3,6 +3,7 @@
 namespace Cocoders\MedicalClinic;
 
 use Cocoders\MedicalClinic\Clinic\PatientCase;
+use Cocoders\MedicalClinic\Employee\Receptionist;
 
 class Clinic
 {
@@ -68,8 +69,15 @@ class Clinic
         }
     }
 
-    public function registerPatient(Patient $patient, $hasInsurance)
+    public function registerPatient(Patient $patient, $receptionistId, $hasInsurance)
     {
+        $isReceptionist = (boolean) array_filter($this->employees, function (Employee $employee) use ($receptionistId) {
+            return $employee instanceof Receptionist && $employee->hasIdNumber($receptionistId);
+        });
+        if (!$isReceptionist)  {
+           throw new \InvalidArgumentException(sprintf('%s is not receptionist', $receptionistId));
+        }
+
         if ($case = $this->findPatientCase($patient->getIdNumber())) {
             $case->registerVisit($patient, $hasInsurance);
             return;

@@ -14,4 +14,9 @@ abstract class Employee
         $this->lastName = $lastName;
         $this->idNumber = $idNumber;
     }
+
+    public function hasIdNumber($idNumber)
+    {
+        return $this->idNumber == $idNumber;
+    }
 }

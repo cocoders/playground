@@ -1,0 +1,16 @@
+Cocoders\MedicalClinic\Clinic\Address:
+  type: embeddable
+  fields:
+    postalCode:
+      type: string
+      length: 10
+      nullable: false
+      column: postal_code
+    street:
+      type: string
+      nullable: false
+    city:
+      type: array
+      length: 150
+      nullable: false
+

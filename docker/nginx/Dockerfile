@@ -5,8 +5,9 @@
 #
 
 # Pull base image.
-FROM dockerfile/ubuntu
+FROM ubuntu:14.04
 
+RUN apt-get install -y software-properties-common
 # Install Nginx.
 RUN \
   add-apt-repository -y ppa:nginx/stable && \

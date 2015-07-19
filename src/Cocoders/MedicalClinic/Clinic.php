@@ -3,7 +3,9 @@
 namespace Cocoders\MedicalClinic;
 
 use Cocoders\MedicalClinic\Clinic\PatientCase;
+use Cocoders\MedicalClinic\Clinic\TaxIdentificationNumber;
 use Cocoders\MedicalClinic\Employee\Receptionist;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Clinic
 {
@@ -17,7 +19,7 @@ class Clinic
      */
     private $services;
     /**
-     * @var Clinic\TaxIdentificationNumber
+     * @var string
      */
     private $taxNumber;
     /**
@@ -48,18 +50,19 @@ class Clinic
         $this->name = $name;
         $this->address = $address;
         $this->services = $services;
-        $this->taxNumber = $taxNumber;
+        $this->taxNumber = (string) $taxNumber;
         $this->nationalEconomyRegisterNumber = $nationalEconomyRegisterNumber;
+        $this->employees = new ArrayCollection();
     }
 
     public function getTaxIdNumber()
     {
-        return $this->taxNumber;
+        return new TaxIdentificationNumber($this->taxNumber);
     }
 
     public function hasEmployee(Employee $employee)
     {
-        return false !== array_search($employee, $this->employees);
+        return $this->employees->contains($employee);
     }
 
     public function hireEmployee(Employee $employee)
@@ -71,9 +74,10 @@ class Clinic
 
     public function registerPatient(Patient $patient, $receptionistId, $hasInsurance)
     {
-        $isReceptionist = (boolean) array_filter($this->employees, function (Employee $employee) use ($receptionistId) {
+        $isReceptionist = (boolean) $this->employees->filter(function (Employee $employee) use ($receptionistId) {
             return $employee instanceof Receptionist && $employee->hasIdNumber($receptionistId);
-        });
+        })->first();
+
         if (!$isReceptionist)  {
            throw new \InvalidArgumentException(sprintf('%s is not receptionist', $receptionistId));
         }

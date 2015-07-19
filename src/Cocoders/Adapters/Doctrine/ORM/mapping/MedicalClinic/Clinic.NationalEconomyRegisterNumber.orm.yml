@@ -1,0 +1,9 @@
+Cocoders\MedicalClinic\Clinic\NationalEconomyRegisterNumber:
+  type: embeddable
+  fields:
+    number:
+      type: string
+      length: 9
+      options:
+        fixed: true
+
